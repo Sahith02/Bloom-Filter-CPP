@@ -2,6 +2,7 @@
 	"files.associations": {
 		"*.cpp": "cpp",
 		"*.c": "c",
-		"iostream": "cpp"
+		"iostream": "cpp",
+		"ostream": "cpp"
 	}
 }
