@@ -62,6 +62,30 @@ class bit_vector{
 		return this -> test(bit_pos);
 	}
 
+	int size(){
+		return this -> _bit_size;
+	}
+
+	int count(){
+		int _count = 0;
+		for(int i = 0; i < this -> _bit_size; ++i){
+			if(this -> test(i) == true){
+				// cout << i << " ";
+				++_count;
+			}
+		}
+		return _count;
+	}
+
+	bool any(){
+		for(int i = 0; i < this -> _bit_size; ++i){
+			if(this -> test(i) == true){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	friend ostream& operator<<<bit_size>(ostream &output, bit_vector<bit_size> b);
 };
 
@@ -89,12 +113,14 @@ ostream& operator<<(ostream &output, bit_vector<bit_size> b){
 }
 
 int main(){
-	// cout << boolalpha;
+	cout << boolalpha;
 	bit_vector<30> b;
 	b.set(2, 1);
 	b.set(3, 1);
-	cout << b.test(2) << " " << b.test(4) << endl;
-	cout << b[2] << " " << b[4] << endl;
-	cout << b << endl;
-	cout << "Bloom filters coming up!" << endl;
+	cout << "Array is: " << b << endl;
+	cout << "Array value at 2: " << b.test(2) << ", Array value at 4: " << b.test(4) << endl;
+	cout << "Array value at 2: " << b[2] << ", Array value at 4: " << b[4] << endl;
+	cout << "Array size is: " << b.size() << endl;
+	cout << "Array count of set bits is: " << b.count() << endl;
+	cout << "Is any bit set in the array? " << b.any() << endl;
 }
