@@ -12,11 +12,12 @@ ostream& operator<<(ostream &output, bit_vector<bit_size> b);
 template<int bit_size>
 class bit_vector{
 	private:
-	int _bit_size;
-	int _array_size;
-	uint32_t* _bit_array;
+	int _bit_size;			// Total number of bits in the array
+	int _array_size;		// Number of 32 bit WORDS in the array [ONLY FOR INTERNAL USE]
+	uint32_t* _bit_array;	// The actual array of 32 bit words
 
 	public:
+	// Default constructor of len bit_size
 	bit_vector() : _bit_size(bit_size) {
 		_array_size = _bit_size / WORD + 1;
 		_bit_array = new uint32_t[_array_size];
@@ -25,6 +26,17 @@ class bit_vector{
 		}
 	}
 
+	// Copy constructor of same len bit_size
+	bit_vector(bit_vector<bit_size>& b){
+		this -> _bit_size = b._bit_size;
+		this -> _array_size = b._array_size;
+		this -> _bit_array = new uint32_t[this -> _array_size];
+		for(int i = 0; i < this -> _bit_size; ++i){
+			this -> set(i, b.test(i));
+		}
+	}
+
+	// Internal helper functions
 	int array_index(int bit_pos){
 		return bit_pos / WORD;
 	}
@@ -151,7 +163,7 @@ ostream& operator<<(ostream &output, bit_vector<bit_size> b){
 
 int main(){
 	cout << boolalpha;
-	bit_vector<30> b;
+	bit_vector<10> b;
 	b.set(2, 1);
 	b.set(3, 1);
 	cout << "Array is: " << b << endl;
@@ -162,8 +174,12 @@ int main(){
 	cout << "Is any bit set in the array? " << b.any() << endl;
 	cout << "Is array empty? " << b.none() << endl;
 	cout << "Are all bits set in the array? " << b.all() << endl;
-	b.flip();
-	cout << "Array after flipping: " << b << endl;
+	bit_vector<10> c(b);
+	cout << "New array c (copy of b): " << c << endl;
+	c.flip();
+	cout << "Array b after flipping c: " << b << endl;
+	cout << "Array c after flipping c: " << c << endl;
 	b.reset();
-	cout << "Array after resetting: " << b << endl;
+	cout << "Array b after resetting b: " << b << endl;
+	cout << "Array c after resetting b: " << c << endl;
 }
