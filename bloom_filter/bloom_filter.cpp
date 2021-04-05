@@ -173,7 +173,7 @@ ostream& operator<<(ostream &output, bit_vector<bit_size> b){
 			output << ((temp & compare) ? 1 : 0) << " ";
 			temp = temp << 1;
 		}
-		output << endl;
+		// output << endl;
 	}
 	// printing last element of the bit array
 	uint32_t temp = b._bit_array[i];
@@ -187,9 +187,9 @@ ostream& operator<<(ostream &output, bit_vector<bit_size> b){
 
 int main(){
 	cout << boolalpha;
-	bit_vector<10> b;
-	b.set(2, 1);
-	b.set(3, 1);
+	bit_vector<40> b;
+	b.set(38, 1);
+	b.set(39, 1);
 	cout << "Array is: " << b << endl;
 	cout << "Array value at 2: " << b.test(2) << ", Array value at 4: " << b.test(4) << endl;
 	cout << "Array value at 2: " << b[2] << ", Array value at 4: " << b[4] << endl;
@@ -198,7 +198,7 @@ int main(){
 	cout << "Is any bit set in the array? " << b.any() << endl;
 	cout << "Is array empty? " << b.none() << endl;
 	cout << "Are all bits set in the array? " << b.all() << endl;
-	bit_vector<10> c(b);
+	bit_vector<40> c(b);
 	cout << "New array c (copy of b): " << c << endl;
 	c.flip();
 	cout << "Array b after flipping c: " << b << endl;
