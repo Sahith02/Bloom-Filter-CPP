@@ -33,6 +33,7 @@ class bit_vector{
 		return bit_pos % WORD;
 	}
 
+	// Bit operation functions
 	bool set(int bit_pos, bool bit_val){
 		if(bit_pos >= _bit_size){
 			return false;
@@ -49,6 +50,24 @@ class bit_vector{
 		return true;
 	}
 
+	void reset(){
+		for(int i = 0; i < this -> _bit_size; ++i){
+			this -> set(i, 0);
+		}
+	}
+
+	void flip(){
+		for(int i = 0; i < this -> _bit_size; ++i){
+			if(this -> test(i) == true){
+				this -> set(i, false);
+			}
+			else{
+				this -> set(i, true);
+			}
+		}
+	}
+
+	// Bit access functions
 	bool test(int bit_pos){
 		if(bit_pos >= _bit_size){
 			return false;
@@ -84,6 +103,24 @@ class bit_vector{
 			}
 		}
 		return false;
+	}
+
+	bool none(){
+		if(this -> any() == false){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	bool all(){
+		for(int i = 0; i < this -> _bit_size; ++i){
+			if(this -> test(i) == false){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	friend ostream& operator<<<bit_size>(ostream &output, bit_vector<bit_size> b);
@@ -123,4 +160,10 @@ int main(){
 	cout << "Array size is: " << b.size() << endl;
 	cout << "Array count of set bits is: " << b.count() << endl;
 	cout << "Is any bit set in the array? " << b.any() << endl;
+	cout << "Is array empty? " << b.none() << endl;
+	cout << "Are all bits set in the array? " << b.all() << endl;
+	b.flip();
+	cout << "Array after flipping: " << b << endl;
+	b.reset();
+	cout << "Array after resetting: " << b << endl;
 }
