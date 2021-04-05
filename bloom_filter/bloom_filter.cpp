@@ -56,6 +56,10 @@ class bit_vector{
 		}
 	}
 
+	~bit_vector(){
+		delete[] _bit_array;
+	}
+
 	// Internal helper functions
 	int array_index(int bit_pos){
 		return bit_pos / WORD;
