@@ -164,12 +164,12 @@ class bit_vector{
 
 template<int bit_size>
 ostream& operator<<(ostream &output, bit_vector<bit_size> b){
-	uint32_t compare = (1 << 31);
+	uint32_t compare = (1 << (WORD - 1));
 	// printing all but last element of bit array
 	int i = 0;
 	for(i = 0; i < b._array_size - 1; ++i){
 		uint32_t temp = b._bit_array[i];
-		for(int j = 0; j < 32; ++j){
+		for(int j = 0; j < WORD; ++j){
 			output << ((temp & compare) ? 1 : 0) << " ";
 			temp = temp << 1;
 		}
