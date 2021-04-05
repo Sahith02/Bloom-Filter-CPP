@@ -3,6 +3,26 @@
 using namespace std;
 #define WORD 32
 
+/*
+[Class Methods]
+Class bit_vector:
+	default constructor: initialises empty array of 0s of given size;
+	copy constructor: Makes a deep copy of a previous bit_vector of same size;
+	set(bit_pos, bit_val): sets bit to bit_val at position bit_pos
+	reset(): resets all bits to 0
+	flip(): flips all bits
+	test(i): returns value at index i
+	operator[i]: returns value at index i
+	size(): returns length of bit vector
+	count(): returns number of 1s in the vector
+	any(): checks if atleast 1 bit is set to 1
+	none(): checks if none of the bits are set to 1
+	all(): checks if all of the bits are set to 1
+	friend ostream operator<<: displays bit vector
+*/
+
+
+
 template<int bit_size>
 class bit_vector;
 
