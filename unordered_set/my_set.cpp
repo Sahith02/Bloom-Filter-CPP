@@ -112,25 +112,126 @@ class my_set{
 
 	class iterator{
 		private:
-		Node** _it_ptr;
+		Node* _it_ptr;
+		int _x;
+		Node** _bb;
+		int _bkt_count;
 
 		public:
-		iterator(Node** it_ptr) : _it_ptr(it_ptr) {}
+		iterator(Node* it_ptr, int x, Node** bkts, int bkt_count) : _it_ptr(it_ptr) , _x(x), _bb(bkts), _bkt_count(bkt_count) {}
+		// Node** _it_ptr;
+
+		// public:
+		// iterator(Node** it_ptr) : _it_ptr(it_ptr) {}
 		
 		int operator*(){
-			return (*_it_ptr) -> _data;
+			return (_it_ptr) -> _data;
 		}
 
-		iterator operator++(){
-			if((*_it_ptr) -> _next == NULL){
-				do{
-					++_it_ptr;
-				}while((*_it_ptr) == NULL);
-				return _it_ptr;
+		iterator& operator++(){
+			if(_it_ptr->_next!=NULL)
+			_it_ptr=_it_ptr->_next;
+			else
+			{
+				//cout<<"hello"<<endl;
+				//cout<<_x<<endl;
+				_x+=1;
+				while(_bb[_x]==NULL && _x!=_bkt_count)
+				{
+					_x+=1;
+				}
+				_it_ptr=_bb[_x];
+				
 			}
-			*_it_ptr = (*_it_ptr) -> _next;
 			return *this;
+			
 		}
+		
+		 iterator operator++(int){
+		 	iterator it=*this;
+			if(_it_ptr->_next!=NULL)
+			_it_ptr=_it_ptr->_next;
+			else
+			{
+				//cout<<"hello"<<endl;
+				//cout<<_x<<endl;
+				_x+=1;
+				while(_bb[_x]==NULL && _x!=_bkt_count)
+				{
+					_x+=1;
+				}
+				_it_ptr=_bb[_x];
+				
+				
+			}
+			return it;
+		 }
+		 
+		iterator& operator--(){
+			if(_it_ptr->_prev!=NULL)
+			_it_ptr=_it_ptr->_prev;
+			else
+			{
+				//cout<<"hello"<<endl;
+				//cout<<_x<<endl;
+				_x-=1;
+				while(_bb[_x]==NULL && _x!=-1)
+				{
+					_x-=1;
+				}
+				_it_ptr=_bb[_x];
+				while(_it_ptr->_next!=NULL)
+				{
+					_it_ptr=_it_ptr->_next;
+				}
+				
+			}
+			return *this;
+			
+		}
+		
+		iterator operator--(int){
+		 	iterator it=*this;
+			if(_it_ptr->_prev!=NULL)
+			_it_ptr=_it_ptr->_prev;
+			else
+			{
+				_x-=1;
+				while(_bb[_x]==NULL && _x!=-1)
+				{
+					_x-=1;
+				}
+				_it_ptr=_bb[_x];
+				while(_it_ptr->_next!=NULL)
+				{
+					_it_ptr=_it_ptr->_next;
+				}
+				
+			}
+			return it;
+		 }
+		 
+		bool operator!=(const iterator& it)
+        {
+            return _it_ptr != it._it_ptr;
+        }
+        
+        iterator& operator=(Node* pNode)
+        {
+            this->_it_ptr = pNode;
+            return *this;
+        }
+
+		// iterator operator++(){
+		// 	if((*_it_ptr) -> _next == NULL){
+		// 		do{
+		// 			++_it_ptr;
+		// 		}while((*_it_ptr) == NULL);
+		// 		return _it_ptr;
+		// 	}
+		// 	*_it_ptr = (*_it_ptr) -> _next;
+		// 	return *this;
+		// }
 
 		// iterator operator++(int){
 		// 	iterator temp(*this);
@@ -142,7 +243,8 @@ class my_set{
 	iterator begin(){
 		for(int i = 0; i < _bucket_count; ++i){
 			if(_buckets[i] != NULL){
-				return iterator(&_buckets[i]);
+				return iterator(_buckets[i], i,_buckets,_bucket_count);
+				// return iterator(&_buckets[i]);
 			}
 		}
 	}
@@ -160,14 +262,24 @@ int main(){
 	set.insert(4);
 	// set.insert(10);
 	set.insert(11);
-	// set.insert(41);
-	// set.insert(2);
-	// set.insert(15);
 	set.show();
-	auto it = set.begin();
-	cout << *(it) << endl;
-	cout << *(++it) << endl;
-	cout << *(++it) << endl;
+	my_set::iterator it = set.begin();
+	++it;
+	it++;
+	cout<< *it<<endl;
+	if(it!=set.begin())
+	cout<<"yeah"<<endl;
+	it=++it;
+	cout<<*it<<endl;
+	--it;
+	it--;
+	--it;
+	cout<<*it<<endl;
+	 
+	// auto it = set.begin();
+	// cout << *(it) << endl;
+	// cout << *(++it) << endl;
+	// cout << *(++it) << endl;
 	// cout << *(it++) << endl;
 	// cout << *(it++) << endl;
 	// cout << *(it++) << endl;
