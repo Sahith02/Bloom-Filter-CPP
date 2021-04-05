@@ -26,7 +26,11 @@ class bit_vector{
 		return bit_pos % WORD;
 	}
 
-	void set(int bit_pos, bool bit_val){
+	bool set(int bit_pos, bool bit_val){
+		if(bit_pos >= _bit_size){
+			return false;
+		}
+
 		int bit_index = array_index(bit_pos);
 		int bit_offset = array_offset(bit_pos);
 		if(bit_val){
@@ -35,6 +39,14 @@ class bit_vector{
 		else{
 			_bit_array[bit_index] &= ~(1 << (WORD - bit_offset - 1));
 		}
+		return true;
+	}
+
+	bool test(int bit_pos){
+		int bit_index = array_index(bit_pos);
+		int bit_offset = array_offset(bit_pos);
+
+		return _bit_array[bit_index] & (1 << (WORD - bit_offset - 1));
 	}
 
 	void show(){
@@ -50,7 +62,6 @@ class bit_vector{
 			cout << endl;
 		}
 		// printing last element of the bit array
-		// ++i;
 		uint32_t temp = _bit_array[i];
 		int max_offset = _bit_size % WORD;
 		for(int j = 0; j < max_offset; ++j){
@@ -62,10 +73,11 @@ class bit_vector{
 };
 
 int main(){
+	cout << boolalpha;
 	bit_vector b(30);
 	b.set(2, 1);
-	// b.set(2, 0);
-	// b.set(2, 1);
+	b.set(3, 1);
+	cout << b.test(2) << b.test(3) << endl;
 	b.show();
 	cout << "Bloom filters coming up!" << endl;
 }
