@@ -125,7 +125,6 @@ class bit_vector{
 		int _count = 0;
 		for(int i = 0; i < this -> _bit_size; ++i){
 			if(this -> test(i) == true){
-				// cout << i << " ";
 				++_count;
 			}
 		}
@@ -173,7 +172,6 @@ ostream& operator<<(ostream &output, bit_vector<bit_size> b){
 			output << ((temp & compare) ? 1 : 0) << " ";
 			temp = temp << 1;
 		}
-		// output << endl;
 	}
 	// printing last element of the bit array
 	uint32_t temp = b._bit_array[i];
