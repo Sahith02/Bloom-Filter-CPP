@@ -3,6 +3,7 @@
 using namespace std;
 #define WORD 32
 
+template<int bit_size>
 class bit_vector{
 	private:
 	int _bit_size;
@@ -10,7 +11,7 @@ class bit_vector{
 	uint32_t* _bit_array;
 
 	public:
-	bit_vector(int size) : _bit_size(size) {
+	bit_vector() : _bit_size(bit_size) {
 		_array_size = _bit_size / WORD + 1;
 		_bit_array = new uint32_t[_array_size];
 		for(int i = 0; i < _array_size; ++i){
@@ -74,7 +75,7 @@ class bit_vector{
 
 int main(){
 	cout << boolalpha;
-	bit_vector b(30);
+	bit_vector<30> b;
 	b.set(2, 1);
 	b.set(3, 1);
 	cout << b.test(2) << b.test(3) << endl;
