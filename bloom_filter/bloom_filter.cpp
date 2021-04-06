@@ -3,6 +3,8 @@
 using namespace std;
 #define WORD 32
 
+// Reminder: make int to long long;
+
 /*
 [Class Methods]
 Class bit_vector:
@@ -60,6 +62,7 @@ class bit_vector{
 		delete[] _bit_array;
 	}
 
+	// Make these 2 private
 	// Internal helper functions
 	int array_index(int bit_pos){
 		return bit_pos / WORD;
@@ -185,9 +188,9 @@ ostream& operator<<(ostream &output, bit_vector<bit_size> b){
 
 int main(){
 	cout << boolalpha;
-	bit_vector<40> b;
-	b.set(38, 1);
-	b.set(39, 1);
+	bit_vector<20> b;
+	b.set(2, 1);
+	b.set(3, 1);
 	cout << "Array is: " << b << endl;
 	cout << "Array value at 2: " << b.test(2) << ", Array value at 4: " << b.test(4) << endl;
 	cout << "Array value at 2: " << b[2] << ", Array value at 4: " << b[4] << endl;
@@ -196,7 +199,7 @@ int main(){
 	cout << "Is any bit set in the array? " << b.any() << endl;
 	cout << "Is array empty? " << b.none() << endl;
 	cout << "Are all bits set in the array? " << b.all() << endl;
-	bit_vector<40> c(b);
+	bit_vector<20> c(b);
 	cout << "New array c (copy of b): " << c << endl;
 	c.flip();
 	cout << "Array b after flipping c: " << b << endl;
@@ -205,3 +208,22 @@ int main(){
 	cout << "Array b after resetting b: " << b << endl;
 	cout << "Array c after resetting b: " << c << endl;
 }
+
+/*
+	bloom_filter<string> bf(1000000);
+	bf.insert("abc", hash_functor, hash2_functor);
+	bf.insert("xyz");
+	bf.check("abc");
+*/
+
+/*
+[Class Methods]
+Class bloom_filter:
+	private:
+	int count_inserted;
+	default constructor: initialises empty array of 0s of given size;
+	copy constructor: Makes a deep copy of a previous bit_vector of same size;
+	insert(): insert hashed value k number of times after each hash function;
+	check(): checks and returns true/false;
+	probability_false_positive(): returns false probability percentage calculated from the # of inserted elements;
+*/
