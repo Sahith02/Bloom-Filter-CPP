@@ -242,6 +242,14 @@ Class bloom_filter:
 	probability_false_positive(): returns false probability percentage calculated from the # of inserted elements;
 */
 
+// Backup hash class
+// class hash_function{
+// 	public:
+// 		hash_function(string value, int seed){}
+// 		hash_function(int value, int seed){}
+// 		hash_function(float value, int seed){}
+// };
+
 template<typename T>
 class bloom_filter{
 	private:
@@ -250,6 +258,9 @@ class bloom_filter{
 		int _bit_array_size;
 		int _expected_num_elements;
 		bit_vector<>* _bit_vector;
+		// int hash_function(int value, int seed){
+		// 	// make hash function
+		// }
 
 	public:
 		bloom_filter(double false_positive_rate, int expected_num_elements)
@@ -267,6 +278,27 @@ class bloom_filter{
 			// initialize bit_vector of size _bit_array_size
 			// _bit_vector = new bit_vector<>(_bit_array_size);
 			// cout << *_bit_vector;
+		}
+
+		bool insert(int value){
+			// Loop through i from 0 till _num_hash_fn
+				// seed is i
+				// call hash_fn(value, i)
+				// This hashed value, gets modded with _bit_array_size
+				// set the bit to 1 at that modded value
+		}
+
+		bool check(int value){
+			// Loop through i from 0 till _num_hash_fn
+				// seed is i
+				// call hash_fn(value, i)
+				// This hashed value, gets modded with _bit_array_size
+				// If the bit is not set -> return false
+			// return true
+		}
+
+		double probability_false_positive(){
+			// return _false_positive_rate
 		}
 };
 
