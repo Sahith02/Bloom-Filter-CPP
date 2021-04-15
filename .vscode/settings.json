@@ -3,6 +3,7 @@
 		"*.cpp": "cpp",
 		"*.c": "c",
 		"iostream": "cpp",
-		"ostream": "cpp"
+		"ostream": "cpp",
+		"iosfwd": "cpp"
 	}
 }

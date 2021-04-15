@@ -31,7 +31,7 @@ class bit_vector;
 template<int bit_size>
 ostream& operator<<(ostream &output, bit_vector<bit_size> b);
 
-template<int bit_size>
+template<int bit_size = 0>
 class bit_vector{
 	private:
 	int _bit_size;			// Total number of bits in the array
@@ -41,6 +41,14 @@ class bit_vector{
 	public:
 	// Default constructor of len bit_size
 	bit_vector() : _bit_size(bit_size) {
+		_array_size = _bit_size / WORD + 1;
+		_bit_array = new uint32_t[_array_size];
+		for(int i = 0; i < _array_size; ++i){
+			_bit_array[i] = 0;
+		}
+	}
+
+	bit_vector(int _bit_size) : _bit_size(_bit_size) {
 		_array_size = _bit_size / WORD + 1;
 		_bit_array = new uint32_t[_array_size];
 		for(int i = 0; i < _array_size; ++i){
@@ -186,28 +194,28 @@ ostream& operator<<(ostream &output, bit_vector<bit_size> b){
 	return output;
 }
 
-int main(){
-	cout << boolalpha;
-	bit_vector<20> b;
-	b.set(2, 1);
-	b.set(3, 1);
-	cout << "Array is: " << b << endl;
-	cout << "Array value at 2: " << b.test(2) << ", Array value at 4: " << b.test(4) << endl;
-	cout << "Array value at 2: " << b[2] << ", Array value at 4: " << b[4] << endl;
-	cout << "Array size is: " << b.size() << endl;
-	cout << "Array count of set bits is: " << b.count() << endl;
-	cout << "Is any bit set in the array? " << b.any() << endl;
-	cout << "Is array empty? " << b.none() << endl;
-	cout << "Are all bits set in the array? " << b.all() << endl;
-	bit_vector<20> c(b);
-	cout << "New array c (copy of b): " << c << endl;
-	c.flip();
-	cout << "Array b after flipping c: " << b << endl;
-	cout << "Array c after flipping c: " << c << endl;
-	b.reset();
-	cout << "Array b after resetting b: " << b << endl;
-	cout << "Array c after resetting b: " << c << endl;
-}
+// int main(){
+// 	cout << boolalpha;
+// 	bit_vector<20> b;
+// 	b.set(2, 1);
+// 	b.set(3, 1);
+// 	cout << "Array is: " << b << endl;
+// 	cout << "Array value at 2: " << b.test(2) << ", Array value at 4: " << b.test(4) << endl;
+// 	cout << "Array value at 2: " << b[2] << ", Array value at 4: " << b[4] << endl;
+// 	cout << "Array size is: " << b.size() << endl;
+// 	cout << "Array count of set bits is: " << b.count() << endl;
+// 	cout << "Is any bit set in the array? " << b.any() << endl;
+// 	cout << "Is array empty? " << b.none() << endl;
+// 	cout << "Are all bits set in the array? " << b.all() << endl;
+// 	bit_vector<20> c(b);
+// 	cout << "New array c (copy of b): " << c << endl;
+// 	c.flip();
+// 	cout << "Array b after flipping c: " << b << endl;
+// 	cout << "Array c after flipping c: " << c << endl;
+// 	b.reset();
+// 	cout << "Array b after resetting b: " << b << endl;
+// 	cout << "Array c after resetting b: " << c << endl;
+// }
 
 /*
 	bloom_filter<string> bf(1000000);
@@ -220,10 +228,49 @@ int main(){
 [Class Methods]
 Class bloom_filter:
 	private:
-	int count_inserted;
-	default constructor: initialises empty array of 0s of given size;
-	copy constructor: Makes a deep copy of a previous bit_vector of same size;
-	insert(): insert hashed value k number of times after each hash function;
+	int P: false positivity rate;
+	int k: # of hash functions (seed);
+	int m: size of bit array required;
+	int n: expected # of elements to insert;
+
+	methods:
+	constructor 1: simple init method from parameters P and n;
+	constructor 2: another init method from k, m, n;
+	copy constructor: Makes a deep copy of a previous bloom_filter of same size;
+	insert(): insert hashed value k number of times after each hash function with seed;
 	check(): checks and returns true/false;
 	probability_false_positive(): returns false probability percentage calculated from the # of inserted elements;
 */
+
+template<typename T>
+class bloom_filter{
+	private:
+		double _false_positive_rate;
+		int _num_hash_fn;
+		int _bit_array_size;
+		int _expected_num_elements;
+		bit_vector<>* _bit_vector;
+
+	public:
+		bloom_filter(double false_positive_rate, int expected_num_elements)
+		: _false_positive_rate(false_positive_rate), _expected_num_elements(expected_num_elements){
+			// Calculate _num_hash_fn and _bit_array_size
+			// initialize bit_vector of size _bit_array_size
+			// _bit_array_size = 20;
+			// _bit_vector = new bit_vector<>(_bit_array_size);
+			// cout << *_bit_vector;
+		}
+
+		bloom_filter(int num_hash_fn, int bit_array_size, int expected_num_elements)
+		: _num_hash_fn(num_hash_fn), _bit_array_size(bit_array_size), _expected_num_elements(expected_num_elements){
+			// Calculate _false_positive_rate
+			// initialize bit_vector of size _bit_array_size
+			// _bit_vector = new bit_vector<>(_bit_array_size);
+			// cout << *_bit_vector;
+		}
+};
+
+
+int main(){
+	bloom_filter<int> bf(3, 30, 100);
+}
