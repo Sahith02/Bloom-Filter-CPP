@@ -236,7 +236,7 @@ Class bloom_filter:
 	methods:
 	constructor 1: simple init method from parameters P and n;
 	constructor 2: another init method from k, m, n;
-	copy constructor: Makes a deep copy of a previous bloom_filter of same size;
+	copy constructor: Makes a deep copy of a previous bloom_filter of same size; [REMINDER: HAVE TO MAKE]
 	insert(): insert hashed value k number of times after each hash function with seed;
 	check(): checks and returns true/false;
 	probability_false_positive(): returns false probability percentage calculated from the # of inserted elements;
@@ -255,8 +255,8 @@ class bloom_filter{
 	private:
 		double _false_positive_rate;
 		int _num_hash_fn;
-		int _bit_array_size;
-		int _expected_num_elements;
+		int _bit_array_size;	// [REMINDER: Make long long int]
+		int _expected_num_elements;	// [REMINDER: Make long long int]
 		bit_vector<>* _bit_vector;
 		// int hash_function(int value, int seed){
 		// 	// make hash function
