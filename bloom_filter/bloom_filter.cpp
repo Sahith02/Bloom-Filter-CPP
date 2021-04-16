@@ -242,13 +242,52 @@ Class bloom_filter:
 	probability_false_positive(): returns false probability percentage calculated from the # of inserted elements;
 */
 
-// Backup hash class
-// class hash_function{
-// 	public:
-// 		hash_function(string value, int seed){}
-// 		hash_function(int value, int seed){}
-// 		hash_function(float value, int seed){}
-// };
+// Hash class
+class hash_function{
+	private:
+		long long int hash_function_private(long long int value, int seed){
+			// make actual hash function
+			return value;
+		}
+		string string_to_hex(string value){
+			static const char hex_digits[] = "0123456789ABCDEF";
+
+			string output;
+			output.reserve(value.length() * 2);
+			for (unsigned char c : value)
+			{
+				output.push_back(hex_digits[c >> 4]);
+				output.push_back(hex_digits[c & 15]);
+			}
+
+			return output;
+		}
+	public:
+		int hash(string value, int seed){
+			string output = string_to_hex(value);
+			cout << output << endl;
+			return 3;
+			// return hash_function_private(stoull(output, nullptr, 16), seed);
+		}
+		int hash(int value, int seed){
+			return hash_function_private(static_cast<long long int>(value), seed);
+		}
+		int hash(double value, int seed){
+			cout << to_string(value) << endl;
+			return 2;
+			// string output = string_to_hex(to_string(value));
+			// return hash_function_private(stoull(output, nullptr, 16), seed);
+		}
+};
+
+int main(){
+	hash_function h;
+	cout << h.hash("sahith02@gmail.com", 123) << endl;
+}
+
+// Usage
+// hash_function h;
+// h.hash()
 
 template<typename T>
 class bloom_filter{
@@ -286,6 +325,7 @@ class bloom_filter{
 				// call hash_fn(value, i)
 				// This hashed value, gets modded with _bit_array_size
 				// set the bit to 1 at that modded value
+			return true;
 		}
 
 		bool check(int value){
@@ -294,15 +334,16 @@ class bloom_filter{
 				// call hash_fn(value, i)
 				// This hashed value, gets modded with _bit_array_size
 				// If the bit is not set -> return false
-			// return true
+			return true;
 		}
 
 		double probability_false_positive(){
 			// return _false_positive_rate
+			return 0;
 		}
 };
 
 
-int main(){
-	bloom_filter<int> bf(3, 30, 100);
-}
+// int main(){
+// 	bloom_filter<int> bf(3, 30, 100);
+// }
