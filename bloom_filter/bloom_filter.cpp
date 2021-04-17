@@ -1,8 +1,10 @@
 #include <iostream>
 #include <stdlib.h>
 #include <cmath>
+#include <sstream>
 using namespace std;
 #define WORD 32
+#define PRIME 32494189635056477
 
 // Reminder: make int to long long;
 
@@ -218,12 +220,7 @@ ostream& operator<<(ostream &output, bit_vector<bit_size> b){
 // 	cout << "Array c after resetting b: " << c << endl;
 // }
 
-/*
-	bloom_filter<string> bf(1000000);
-	bf.insert("abc", hash_functor, hash2_functor);
-	bf.insert("xyz");
-	bf.check("abc");
-*/
+
 
 /*
 [Class Methods]
@@ -245,39 +242,26 @@ Class bloom_filter:
 
 // Hash class
 class hash_function{
-	private:
-		long long int hash_function_private(long long int value, int seed){
-			// make actual hash function
-			return value;
-		}
-		string string_to_hex(string value){
-			static const char hex_digits[] = "0123456789ABCDEF";
-
-			string output;
-			output.reserve(value.length() * 2);
-			for (unsigned char c : value)
-			{
-				output.push_back(hex_digits[c >> 4]);
-				output.push_back(hex_digits[c & 15]);
-			}
-
-			return output;
-		}
 	public:
-		int hash(string value, int seed){
-			string output = string_to_hex(value);
-			cout << output << endl;
-			return 3;
-			// return hash_function_private(stoull(output, nullptr, 16), seed);
+		long long unsigned int hash(string value, int seed){
+			long long unsigned int hashed_value = 1;
+			long long int temp = 1;
+			for(int i = 0; i < value.size(); ++i){
+				temp = (temp * 53) % PRIME;
+				hashed_value = (hashed_value + (temp * (int)value[i] + 47 * seed)) % PRIME;
+			}
+			return hashed_value;
 		}
-		int hash(int value, int seed){
-			return hash_function_private(static_cast<long long int>(value), seed);
+		long long unsigned int hash(long long unsigned int value, int seed){
+			long long unsigned int hashed_value = 1;
+			hashed_value = (53 * value + 47 * seed) % PRIME;
+			return hashed_value;
 		}
-		int hash(double value, int seed){
-			cout << to_string(value) << endl;
-			return 2;
-			// string output = string_to_hex(to_string(value));
-			// return hash_function_private(stoull(output, nullptr, 16), seed);
+		long long unsigned int hash(long double value, int seed){
+			ostringstream strs;
+			strs << value;
+			string str = strs.str();
+			return hash(str, seed);
 		}
 };
 
@@ -298,9 +282,6 @@ class bloom_filter{
 		int _bit_array_size;	// [REMINDER: Make long long int]
 		int _expected_num_elements;	// [REMINDER: Make long long int]
 		bit_vector<>* _bit_vector;
-		// int hash_function(int value, int seed){
-		// 	// make hash function
-		// }
 		inline void update_fpr(int num_hash_fn, int bit_array_size, int expected_num_elements){
 			_false_positive_rate = pow(( 1.0 - (pow( (1.0-(1.0/bit_array_size)) , (num_hash_fn*expected_num_elements) ) )), (num_hash_fn));
 		}
@@ -321,7 +302,6 @@ class bloom_filter{
 			// initialize bit_vector of size _bit_array_size
 			update_fpr(_num_hash_fn, _bit_array_size, _expected_num_elements);
 			_bit_vector = new bit_vector<>(_bit_array_size);
-			// cout << *_bit_vector;
 		}
 
 		bool insert(int value){
@@ -351,4 +331,11 @@ class bloom_filter{
 int main(){
 	bloom_filter<int> bf(1, 200, 200);
 	cout << bf.probability_false_positive() << endl;
+	hash_function h;
+	cout << h.hash("abc", 2) << endl;
+	long long unsigned int temp = 18736583454784733;
+	cout << h.hash(temp, 2) << endl;
+
+	long double temp2 = 12467.4784;
+	cout << h.hash(temp2, 1) << endl;
 }
