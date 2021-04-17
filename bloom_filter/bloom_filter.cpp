@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
+#include <cmath>
 using namespace std;
 #define WORD 32
 
@@ -280,10 +281,10 @@ class hash_function{
 		}
 };
 
-int main(){
-	hash_function h;
-	cout << h.hash("sahith02@gmail.com", 123) << endl;
-}
+// int main(){
+// 	hash_function h;
+// 	cout << h.hash("sahith02@gmail.com", 123) << endl;
+// }
 
 // Usage
 // hash_function h;
@@ -300,6 +301,9 @@ class bloom_filter{
 		// int hash_function(int value, int seed){
 		// 	// make hash function
 		// }
+		inline void update_fpr(int num_hash_fn, int bit_array_size, int expected_num_elements){
+			_false_positive_rate = pow(( 1.0 - (pow( (1.0-(1.0/bit_array_size)) , (num_hash_fn*expected_num_elements) ) )), (num_hash_fn));
+		}
 
 	public:
 		bloom_filter(double false_positive_rate, int expected_num_elements)
@@ -315,7 +319,8 @@ class bloom_filter{
 		: _num_hash_fn(num_hash_fn), _bit_array_size(bit_array_size), _expected_num_elements(expected_num_elements){
 			// Calculate _false_positive_rate
 			// initialize bit_vector of size _bit_array_size
-			// _bit_vector = new bit_vector<>(_bit_array_size);
+			update_fpr(_num_hash_fn, _bit_array_size, _expected_num_elements);
+			_bit_vector = new bit_vector<>(_bit_array_size);
 			// cout << *_bit_vector;
 		}
 
@@ -338,12 +343,12 @@ class bloom_filter{
 		}
 
 		double probability_false_positive(){
-			// return _false_positive_rate
-			return 0;
+			return _false_positive_rate;
 		}
 };
 
 
-// int main(){
-// 	bloom_filter<int> bf(3, 30, 100);
-// }
+int main(){
+	bloom_filter<int> bf(1, 200, 200);
+	cout << bf.probability_false_positive() << endl;
+}
