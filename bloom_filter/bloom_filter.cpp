@@ -35,6 +35,12 @@ class bit_vector;
 template<ullong_t bit_size>
 ostream& operator<<(ostream &output, bit_vector<bit_size> b);
 
+template<typename T>
+class bloom_filter;
+
+template<typename T>
+ostream& operator<<(ostream& output, bloom_filter<T> bf);
+
 template<ullong_t bit_size = 0>
 class bit_vector{
 	private:
@@ -242,9 +248,9 @@ Class bloom_filter:
 */
 
 // Hash class
-class hash_function{
+class hasher{
 	public:
-		ullong_t hash(string value, int seed){
+		static ullong_t hash(string value, int seed){
 			ullong_t hashed_value = 1;
 			long long int temp = 1;
 			for(int i = 0; i < value.size(); ++i){
@@ -253,12 +259,12 @@ class hash_function{
 			}
 			return hashed_value;
 		}
-		ullong_t hash(ullong_t value, int seed){
+		static ullong_t hash(ullong_t value, int seed){
 			ullong_t hashed_value = 1;
 			hashed_value = (53 * value + 47 * seed) % PRIME;
 			return hashed_value;
 		}
-		ullong_t hash(long double value, int seed){
+		static ullong_t hash(long double value, int seed){
 			ostringstream strs;
 			strs << value;
 			string str = strs.str();
@@ -280,8 +286,8 @@ class bloom_filter{
 	private:
 		long double _false_positive_rate;
 		int _num_hash_fn;
-		ullong_t _bit_array_size;	// [REMINDER: Make long long int]
-		ullong_t _expected_num_elements;	// [REMINDER: Make long long int]
+		ullong_t _bit_array_size;
+		ullong_t _expected_num_elements;
 		bit_vector<>* _bit_vector;
 		inline void update_fpr(int num_hash_fn, ullong_t bit_array_size, ullong_t expected_num_elements){
 			_false_positive_rate = pow(( 1.0 - (pow( (1.0-(1.0/bit_array_size)) , (num_hash_fn*expected_num_elements) ) )), (num_hash_fn));
@@ -305,12 +311,19 @@ class bloom_filter{
 			_bit_vector = new bit_vector<>(_bit_array_size);
 		}
 
-		bool insert(int value){
+		bool insert(ullong_t value){
 			// Loop through i from 0 till _num_hash_fn
 				// seed is i
 				// call hash_fn(value, i)
 				// This hashed value, gets modded with _bit_array_size
 				// set the bit to 1 at that modded value
+			for(int i = 0; i < _num_hash_fn; ++i){
+				int seed = i + 1;
+				ullong_t hashed_value = hasher::hash(value, seed);
+				ullong_t insert_index = hashed_value % _bit_array_size;
+				_bit_vector -> set(insert_index, 1);
+			}
+			// cout << *_bit_vector << endl;
 			return true;
 		}
 
@@ -326,17 +339,28 @@ class bloom_filter{
 		double probability_false_positive(){
 			return _false_positive_rate;
 		}
+
+		friend ostream& operator<<<T>(ostream& output, bloom_filter<T> bf);
 };
+
+template<typename T>
+ostream& operator<<(ostream& output, bloom_filter<T> bf){
+	output << *(bf._bit_vector);
+	return output;
+}
 
 
 int main(){
-	bloom_filter<int> bf(1, 200, 200);
+	bloom_filter<int> bf(2, 20, 2);
 	cout << bf.probability_false_positive() << endl;
-	hash_function h;
-	cout << h.hash("abc", 2) << endl;
-	ullong_t temp = 18736583454784733;
-	cout << h.hash(temp, 2) << endl;
+	bf.insert(123);
+	cout << bf << endl;
+	bf.insert(12);
+	cout << bf << endl;
+	// cout << hasher::hash("abc", 2) << endl;
+	// ullong_t temp = 18736583454784733;
+	// cout << hasher::hash(temp, 2) << endl;
 
-	long double temp2 = 12467.4784;
-	cout << h.hash(temp2, 1) << endl;
+	// long double temp2 = 12467.4784;
+	// cout << hasher::hash(temp2, 1) << endl;
 }
