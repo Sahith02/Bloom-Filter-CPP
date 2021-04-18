@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <cmath>
 #include <sstream>
-#include<fstream>
+#include <fstream>
+#include <chrono>
 using namespace std;
 #define WORD 32
 #define PRIME 32494189635056477
@@ -351,29 +352,42 @@ ostream& operator<<(ostream& output, bloom_filter<T> bf){
 
 
 int main(){
+	/*
+	using chrono::high_resolution_clock;
+	using chrono::duration_cast;
+	using chrono::duration;
+	auto t1 = high_resolution_clock::now();
+	// Inner code for timing starts
 
 	string TEST_FILE = "./tests/string/string_test_100.txt";
-	std::ifstream file(TEST_FILE);
+	ifstream file(TEST_FILE);
 	if(file.is_open()) {
 		string line;
-		while (std::getline(file, line)) {
+		while (getline(file, line)) {
 			cout << line << endl;
 		}
 		file.close();
 	}
 
-	// bloom_filter<int> bf(2, 30, 2);
-	// bloom_filter<string> bf2(0.1, 30);
-	// cout << bf2.probability_false_positive() << endl;
-	// string test_1 = "sahith02@gmailjasknadn asndnalsdnamsdnakld cmadnaldndfkalsdnmadamsansdk cdcamdncadnsalmsda dsdkakslmdf ffnaklsd.com";
-	// string test_2 = "sahithk02@gmail.com";
-	// bf2.insert(test_1);
-	// cout << bf2 << endl;
-	// bf2.insert(test_2);
-	// cout << bf2 << endl;
+	auto t2 = high_resolution_clock::now();
 
-	// bf.insert(123);
-	// cout << bf << endl;
+	// Inner code for timing ends
+	duration<double, milli> ms_double = t2 - t1;
+	cout << ms_double.count() << "ms\n";
+	*/
+
+	bloom_filter<int> bf(2, 30, 2);
+	bloom_filter<string> bf2(0.1, 30);
+	cout << bf2.probability_false_positive() << endl;
+	string test_1 = "sahith02@gmailjasknadn asndnalsdnamsdnakld cmadnaldndfkalsdnmadamsansdk cdcamdncadnsalmsda dsdkakslmdf ffnaklsd.com";
+	string test_2 = "sahithk02@gmail.com";
+	bf2.insert(test_1);
+	cout << bf2 << endl;
+	bf2.insert(test_2);
+	cout << bf2 << endl;
+
+	bf.insert(123);
+	cout << bf << endl;
 
 	// cout << hasher::hash("abc", 2) << endl;
 	// ullong_t temp = 18736583454784733;
