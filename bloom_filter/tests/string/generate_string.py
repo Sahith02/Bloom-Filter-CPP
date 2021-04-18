@@ -1,7 +1,7 @@
 from key_generator.key_generator import generate
 
-OUTPUT_PATH = "./string_test_100k.txt"
-STRING_COUNT = 100000
+OUTPUT_PATH = "./string_test_100.txt"
+STRING_COUNT = 100
 
 
 output_file = open(OUTPUT_PATH, "w")
