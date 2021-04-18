@@ -46,7 +46,16 @@ class bit_vector{
 	private:
 	ullong_t _bit_size;			// Total number of bits in the array
 	ullong_t _array_size;		// Number of 32 bit WORDS in the array [ONLY FOR INTERNAL USE]
-	uint32_t* _bit_array;	// The actual array of 32 bit words
+	uint32_t* _bit_array;		// The actual array of 32 bit words
+
+	// Internal helper functions
+	ullong_t array_index(ullong_t bit_pos){
+		return bit_pos / WORD;
+	}
+
+	ullong_t array_offset(ullong_t bit_pos){
+		return bit_pos % WORD;
+	}
 
 	public:
 	// Default constructor of len bit_size
@@ -78,16 +87,6 @@ class bit_vector{
 
 	~bit_vector(){
 		delete[] _bit_array;
-	}
-
-	// Make these 2 private
-	// Internal helper functions
-	ullong_t array_index(ullong_t bit_pos){
-		return bit_pos / WORD;
-	}
-
-	ullong_t array_offset(ullong_t bit_pos){
-		return bit_pos % WORD;
 	}
 
 	// Bit operation functions
@@ -247,7 +246,7 @@ Class bloom_filter:
 	probability_false_positive(): returns false probability percentage calculated from the # of inserted elements;
 */
 
-// Hash class
+// Hasher class
 class hasher{
 	public:
 		static ullong_t hash(string value, int seed){
@@ -257,6 +256,11 @@ class hasher{
 				temp = (temp * 53) % PRIME;
 				hashed_value = (hashed_value + (temp * (int)value[i] + 47 * seed)) % PRIME;
 			}
+			return hashed_value;
+		}
+		static ullong_t hash(int value, int seed){
+			ullong_t hashed_value = 1;
+			hashed_value = (53 * value + 47 * seed) % PRIME;
 			return hashed_value;
 		}
 		static ullong_t hash(ullong_t value, int seed){
@@ -272,14 +276,6 @@ class hasher{
 		}
 };
 
-// int main(){
-// 	hash_function h;
-// 	cout << h.hash("sahith02@gmail.com", 123) << endl;
-// }
-
-// Usage
-// hash_function h;
-// h.hash()
 
 template<typename T>
 class bloom_filter{
@@ -311,7 +307,7 @@ class bloom_filter{
 			_bit_vector = new bit_vector<>(_bit_array_size);
 		}
 
-		bool insert(ullong_t value){
+		bool insert(T value){
 			// Loop through i from 0 till _num_hash_fn
 				// seed is i
 				// call hash_fn(value, i)
@@ -320,10 +316,13 @@ class bloom_filter{
 			for(int i = 0; i < _num_hash_fn; ++i){
 				int seed = i + 1;
 				ullong_t hashed_value = hasher::hash(value, seed);
-				ullong_t insert_index = hashed_value % _bit_array_size;
-				_bit_vector -> set(insert_index, 1);
+				ullong_t insert_at_index = hashed_value % _bit_array_size;
+				bool is_inserted = _bit_vector -> set(insert_at_index, 1);
+
+				if(!is_inserted){
+					return false;
+				}
 			}
-			// cout << *_bit_vector << endl;
 			return true;
 		}
 
@@ -351,11 +350,13 @@ ostream& operator<<(ostream& output, bloom_filter<T> bf){
 
 
 int main(){
-	bloom_filter<int> bf(2, 20, 2);
+	bloom_filter<string> bf(2, 30, 2);
 	cout << bf.probability_false_positive() << endl;
-	bf.insert(123);
+	string test_1 = "sahith02@gmail.com";
+	string test_2 = "sahithk02@gmail.com";
+	bf.insert(test_1);
 	cout << bf << endl;
-	bf.insert(12);
+	bf.insert(test_2);
 	cout << bf << endl;
 	// cout << hasher::hash("abc", 2) << endl;
 	// ullong_t temp = 18736583454784733;
