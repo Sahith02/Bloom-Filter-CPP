@@ -5,6 +5,7 @@
 using namespace std;
 #define WORD 32
 #define PRIME 32494189635056477
+typedef unsigned long long int ullong_t;
 
 // Reminder: make int to long long;
 
@@ -28,17 +29,17 @@ Class bit_vector:
 
 
 
-template<int bit_size>
+template<ullong_t bit_size>
 class bit_vector;
 
-template<int bit_size>
+template<ullong_t bit_size>
 ostream& operator<<(ostream &output, bit_vector<bit_size> b);
 
-template<int bit_size = 0>
+template<ullong_t bit_size = 0>
 class bit_vector{
 	private:
-	int _bit_size;			// Total number of bits in the array
-	int _array_size;		// Number of 32 bit WORDS in the array [ONLY FOR INTERNAL USE]
+	ullong_t _bit_size;			// Total number of bits in the array
+	ullong_t _array_size;		// Number of 32 bit WORDS in the array [ONLY FOR INTERNAL USE]
 	uint32_t* _bit_array;	// The actual array of 32 bit words
 
 	public:
@@ -51,7 +52,7 @@ class bit_vector{
 		}
 	}
 
-	bit_vector(int _bit_size) : _bit_size(_bit_size) {
+	bit_vector(ullong_t _bit_size) : _bit_size(_bit_size) {
 		_array_size = _bit_size / WORD + 1;
 		_bit_array = new uint32_t[_array_size];
 		for(int i = 0; i < _array_size; ++i){
@@ -75,22 +76,22 @@ class bit_vector{
 
 	// Make these 2 private
 	// Internal helper functions
-	int array_index(int bit_pos){
+	ullong_t array_index(ullong_t bit_pos){
 		return bit_pos / WORD;
 	}
 
-	int array_offset(int bit_pos){
+	ullong_t array_offset(ullong_t bit_pos){
 		return bit_pos % WORD;
 	}
 
 	// Bit operation functions
-	bool set(int bit_pos, bool bit_val){
+	bool set(ullong_t bit_pos, bool bit_val){
 		if(bit_pos >= _bit_size){
 			return false;
 		}
 
-		int bit_index = array_index(bit_pos);
-		int bit_offset = array_offset(bit_pos);
+		ullong_t bit_index = array_index(bit_pos);
+		ullong_t bit_offset = array_offset(bit_pos);
 		if(bit_val){
 			_bit_array[bit_index] |= (1 << (WORD - bit_offset - 1));
 		}
@@ -101,13 +102,13 @@ class bit_vector{
 	}
 
 	void reset(){
-		for(int i = 0; i < this -> _bit_size; ++i){
+		for(ullong_t i = 0; i < this -> _bit_size; ++i){
 			this -> set(i, 0);
 		}
 	}
 
 	void flip(){
-		for(int i = 0; i < this -> _bit_size; ++i){
+		for(ullong_t i = 0; i < this -> _bit_size; ++i){
 			if(this -> test(i) == true){
 				this -> set(i, false);
 			}
@@ -118,26 +119,26 @@ class bit_vector{
 	}
 
 	// Bit access functions
-	bool test(int bit_pos){
+	bool test(ullong_t bit_pos){
 		if(bit_pos >= _bit_size){
 			return false;
 		}
-		int bit_index = array_index(bit_pos);
-		int bit_offset = array_offset(bit_pos);
+		ullong_t bit_index = array_index(bit_pos);
+		ullong_t bit_offset = array_offset(bit_pos);
 		return _bit_array[bit_index] & (1 << (WORD - bit_offset - 1));
 	}
 
-	bool operator[] (int bit_pos){
+	bool operator[] (ullong_t bit_pos){
 		return this -> test(bit_pos);
 	}
 
-	int size(){
+	ullong_t size(){
 		return this -> _bit_size;
 	}
 
-	int count(){
-		int _count = 0;
-		for(int i = 0; i < this -> _bit_size; ++i){
+	ullong_t count(){
+		ullong_t _count = 0;
+		for(ullong_t i = 0; i < this -> _bit_size; ++i){
 			if(this -> test(i) == true){
 				++_count;
 			}
@@ -146,7 +147,7 @@ class bit_vector{
 	}
 
 	bool any(){
-		for(int i = 0; i < this -> _bit_size; ++i){
+		for(ullong_t i = 0; i < this -> _bit_size; ++i){
 			if(this -> test(i) == true){
 				return true;
 			}
@@ -164,7 +165,7 @@ class bit_vector{
 	}
 
 	bool all(){
-		for(int i = 0; i < this -> _bit_size; ++i){
+		for(ullong_t i = 0; i < this -> _bit_size; ++i){
 			if(this -> test(i) == false){
 				return false;
 			}
@@ -175,11 +176,11 @@ class bit_vector{
 	friend ostream& operator<<<bit_size>(ostream &output, bit_vector<bit_size> b);
 };
 
-template<int bit_size>
+template<ullong_t bit_size>
 ostream& operator<<(ostream &output, bit_vector<bit_size> b){
 	uint32_t compare = (1 << (WORD - 1));
 	// printing all but last element of bit array
-	int i = 0;
+	ullong_t i = 0;
 	for(i = 0; i < b._array_size - 1; ++i){
 		uint32_t temp = b._bit_array[i];
 		for(int j = 0; j < WORD; ++j){
@@ -189,7 +190,7 @@ ostream& operator<<(ostream &output, bit_vector<bit_size> b){
 	}
 	// printing last element of the bit array
 	uint32_t temp = b._bit_array[i];
-	int max_offset = b._bit_size % WORD;
+	ullong_t max_offset = b._bit_size % WORD;
 	for(int j = 0; j < max_offset; ++j){
 		output << ((temp & compare) ? 1 : 0) << " ";
 		temp = temp << 1;
@@ -243,8 +244,8 @@ Class bloom_filter:
 // Hash class
 class hash_function{
 	public:
-		long long unsigned int hash(string value, int seed){
-			long long unsigned int hashed_value = 1;
+		ullong_t hash(string value, int seed){
+			ullong_t hashed_value = 1;
 			long long int temp = 1;
 			for(int i = 0; i < value.size(); ++i){
 				temp = (temp * 53) % PRIME;
@@ -252,12 +253,12 @@ class hash_function{
 			}
 			return hashed_value;
 		}
-		long long unsigned int hash(long long unsigned int value, int seed){
-			long long unsigned int hashed_value = 1;
+		ullong_t hash(ullong_t value, int seed){
+			ullong_t hashed_value = 1;
 			hashed_value = (53 * value + 47 * seed) % PRIME;
 			return hashed_value;
 		}
-		long long unsigned int hash(long double value, int seed){
+		ullong_t hash(long double value, int seed){
 			ostringstream strs;
 			strs << value;
 			string str = strs.str();
@@ -277,17 +278,17 @@ class hash_function{
 template<typename T>
 class bloom_filter{
 	private:
-		double _false_positive_rate;
+		long double _false_positive_rate;
 		int _num_hash_fn;
-		int _bit_array_size;	// [REMINDER: Make long long int]
-		int _expected_num_elements;	// [REMINDER: Make long long int]
+		ullong_t _bit_array_size;	// [REMINDER: Make long long int]
+		ullong_t _expected_num_elements;	// [REMINDER: Make long long int]
 		bit_vector<>* _bit_vector;
-		inline void update_fpr(int num_hash_fn, int bit_array_size, int expected_num_elements){
+		inline void update_fpr(int num_hash_fn, ullong_t bit_array_size, ullong_t expected_num_elements){
 			_false_positive_rate = pow(( 1.0 - (pow( (1.0-(1.0/bit_array_size)) , (num_hash_fn*expected_num_elements) ) )), (num_hash_fn));
 		}
 
 	public:
-		bloom_filter(double false_positive_rate, int expected_num_elements)
+		bloom_filter(long double false_positive_rate, ullong_t expected_num_elements)
 		: _false_positive_rate(false_positive_rate), _expected_num_elements(expected_num_elements){
 			// Calculate _num_hash_fn and _bit_array_size
 			// initialize bit_vector of size _bit_array_size
@@ -296,7 +297,7 @@ class bloom_filter{
 			// cout << *_bit_vector;
 		}
 
-		bloom_filter(int num_hash_fn, int bit_array_size, int expected_num_elements)
+		bloom_filter(int num_hash_fn, ullong_t bit_array_size, ullong_t expected_num_elements)
 		: _num_hash_fn(num_hash_fn), _bit_array_size(bit_array_size), _expected_num_elements(expected_num_elements){
 			// Calculate _false_positive_rate
 			// initialize bit_vector of size _bit_array_size
@@ -333,7 +334,7 @@ int main(){
 	cout << bf.probability_false_positive() << endl;
 	hash_function h;
 	cout << h.hash("abc", 2) << endl;
-	long long unsigned int temp = 18736583454784733;
+	ullong_t temp = 18736583454784733;
 	cout << h.hash(temp, 2) << endl;
 
 	long double temp2 = 12467.4784;
