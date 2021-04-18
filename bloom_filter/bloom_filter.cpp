@@ -292,11 +292,11 @@ class bloom_filter{
 	public:
 		bloom_filter(long double false_positive_rate, ullong_t expected_num_elements)
 		: _false_positive_rate(false_positive_rate), _expected_num_elements(expected_num_elements){
+			_bit_array_size= -1*((_expected_num_elements*log(_false_positive_rate))/pow(log(2),2));
+			_num_hash_fn=(_bit_array_size/_expected_num_elements)*log(2);
+			_bit_vector = new bit_vector<>(_bit_array_size);
 			// Calculate _num_hash_fn and _bit_array_size
 			// initialize bit_vector of size _bit_array_size
-			// _bit_array_size = 20;
-			// _bit_vector = new bit_vector<>(_bit_array_size);
-			// cout << *_bit_vector;
 		}
 
 		bloom_filter(int num_hash_fn, ullong_t bit_array_size, ullong_t expected_num_elements)
@@ -349,15 +349,18 @@ ostream& operator<<(ostream& output, bloom_filter<T> bf){
 }
 
 
+
 int main(){
 	bloom_filter<string> bf(2, 30, 2);
-	cout << bf.probability_false_positive() << endl;
-	string test_1 = "sahith02@gmail.com";
+	bloom_filter<string> bf2(0.1, 30);
+	cout << bf2.probability_false_positive() << endl;
+	string test_1 = "sahith02@gmailjasknadn asndnalsdnamsdnakld cmadnaldndfkalsdnmadamsansdk cdcamdncadnsalmsda dsdkakslmdf ffnaklsd.com";
 	string test_2 = "sahithk02@gmail.com";
-	bf.insert(test_1);
-	cout << bf << endl;
-	bf.insert(test_2);
-	cout << bf << endl;
+	bf2.insert(test_1);
+	cout << bf2 << endl;
+	bf2.insert(test_2);
+	cout << bf2 << endl;
+
 	// cout << hasher::hash("abc", 2) << endl;
 	// ullong_t temp = 18736583454784733;
 	// cout << hasher::hash(temp, 2) << endl;
