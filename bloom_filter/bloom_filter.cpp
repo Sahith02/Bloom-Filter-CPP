@@ -346,8 +346,20 @@ class bloom_filter{
 			return true;
 		}
 
-		double probability_false_positive(){
+		long double get_false_positive_rate(){
 			return _false_positive_rate;
+		}
+
+		int get_num_hash_fn(){
+			return _num_hash_fn;
+		}
+
+		ullong_t get_bit_array_size(){
+			return _bit_array_size;
+		}
+
+		ullong_t get_expected_num_elements(){
+			return _expected_num_elements;
 		}
 
 		friend ostream& operator<<<T>(ostream& output, bloom_filter<T> bf);
@@ -367,16 +379,23 @@ int main(int argc, char** argv){
 	using chrono::duration_cast;
 	using chrono::duration;
 	cout << boolalpha;
-	cout << endl << "===== TEST CASES STARTING =====" << endl;
-	auto t1 = high_resolution_clock::now();
-	// Inner code for timing starts
-
+	
 	bloom_filter<string> bf(
 								4,
 								atoi(argv[2]),
 								atoi(argv[3])
 							);
-	// cout << bf.probability_false_positive() << endl;
+
+	cout << endl << "===== BLOOM FILTER PROPERTIES =====" << endl;
+
+	cout << "False Positive Probability = " << bf.get_false_positive_rate() * 100 << endl;
+	cout << "Number of Hash functions used = " << bf.get_num_hash_fn() << endl;
+	cout << "Bit array size = " << bf.get_bit_array_size() << endl;
+	cout << "Expected number of elements to insert = " << bf.get_expected_num_elements() << endl;
+
+	cout << endl << "===== TEST CASES STARTING =====" << endl;
+	auto t1 = high_resolution_clock::now();
+	// Inner code for timing starts
 
 	string TEST_FILE = "./tests/string/string_test_" + (string)argv[1] + ".txt";
 	string CHECK_FILE = "./tests/check_exists.txt";
@@ -412,7 +431,7 @@ int main(int argc, char** argv){
 		}
 		check_file.close();
 	}
-	cout << argv[1] << endl;
+
 	// cout << bf << endl;
 	// string test_strings[] = {
 	// 							"9623_8E08f@A34-.F190",	// present
@@ -425,28 +444,4 @@ int main(int argc, char** argv){
 	// for(int i = 0; i < test_count; ++i){
 	// 	cout << "Is " << test_strings[i] << " present: " << bf.check(test_strings[i]) << endl;
 	// }
-	
-	
-
-	// bloom_filter<int> bf(2, 30, 2);
-	// bloom_filter<string> bf2(0.1, 30);
-	// cout << bf2.probability_false_positive() << endl;
-	// string test_1 = "sahith02@gmailjasknadn asndnalsdnamsdnakld cmadnaldndfkalsdnmadamsansdk cdcamdncadnsalmsda dsdkakslmdf ffnaklsd.com";
-	// string test_2 = "sahithk02@gmail.com";
-	//bf2.insert(test_1);
-	//cout << bf2 << endl;
-	// bf2.insert(test_2);
-	// cout << bf2 << endl;
-
-	// bf.insert(123);
-	// cout << bf << endl;
-
-	// cout << bf.check(12345) << endl;
-
-	// cout << hasher::hash("abc", 2) << endl;
-	// ullong_t temp = 18736583454784733;
-	// cout << hasher::hash(temp, 2) << endl;
-
-	// long double temp2 = 12467.4784;
-	// cout << hasher::hash(temp2, 1) << endl;
 }
