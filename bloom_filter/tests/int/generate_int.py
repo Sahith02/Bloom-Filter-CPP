@@ -6,7 +6,6 @@ for file_size in all_sizes_required:
 	OUTPUT_PATH = "./int_test_" + file_size[1] + ".txt"
 	STRING_COUNT = file_size[0]
 
-
 	output_file = open(OUTPUT_PATH, "w")
 
 	for i in range(STRING_COUNT):
