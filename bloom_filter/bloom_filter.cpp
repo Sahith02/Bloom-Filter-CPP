@@ -327,7 +327,7 @@ class bloom_filter{
 			return true;
 		}
 
-		bool check(int value){
+		bool check(T value){
 			// Loop through i from 0 till _num_hash_fn
 				// seed is i
 				// call hash_fn(value, i)
@@ -391,13 +391,16 @@ int main(){
 	cout << bf2.probability_false_positive() << endl;
 	string test_1 = "sahith02@gmailjasknadn asndnalsdnamsdnakld cmadnaldndfkalsdnmadamsansdk cdcamdncadnsalmsda dsdkakslmdf ffnaklsd.com";
 	string test_2 = "sahithk02@gmail.com";
-	bf2.insert(test_1);
-	cout << bf2 << endl;
+	//bf2.insert(test_1);
+	//cout << bf2 << endl;
 	bf2.insert(test_2);
 	cout << bf2 << endl;
 
 	bf.insert(123);
 	cout << bf << endl;
+
+	cout << bf.check(12345) << endl;
+	//cout << check_inserted << endl;
 
 	// cout << hasher::hash("abc", 2) << endl;
 	// ullong_t temp = 18736583454784733;
