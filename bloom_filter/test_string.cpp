@@ -28,12 +28,12 @@ int main(int argc, char** argv){
 	cout << "Bit array size = " << bf.get_bit_array_size() << endl;
 	cout << "Expected number of elements to insert = " << bf.get_expected_num_elements() << endl;
 
-	cout << endl << "===== TEST CASES STARTING =====" << endl;
+	cout << endl << "===== STRING TEST CASES STARTING =====" << endl;
 	auto t1 = high_resolution_clock::now();
 	// Inner code for timing starts
 
 	string TEST_FILE = "./tests/string/string_test_" + (string)argv[1] + ".txt";
-	string CHECK_FILE = "./tests/check_exists.txt";
+	string CHECK_FILE = "./tests/check_string_exists.txt";
 
 	ifstream test_file(TEST_FILE);
 	if(test_file.is_open()){
