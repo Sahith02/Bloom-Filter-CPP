@@ -333,6 +333,16 @@ class bloom_filter{
 				// call hash_fn(value, i)
 				// This hashed value, gets modded with _bit_array_size
 				// If the bit is not set -> return false
+			for(int i = 0; i < _num_hash_fn; ++i){
+				int seed = i + 1;
+				ullong_t hashed_value = hasher::hash(value, seed);
+				ullong_t check_at_index = hashed_value % _bit_array_size;
+				bool check_index = _bit_vector -> test(check_at_index);
+
+				if(!check_index){
+					return false;
+				}
+			}
 			return true;
 		}
 
