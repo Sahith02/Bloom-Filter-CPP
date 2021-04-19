@@ -361,26 +361,37 @@ ostream& operator<<(ostream& output, bloom_filter<T> bf){
 
 
 
-int main(){
+int main(int argc, char** argv){
 	
 	using chrono::high_resolution_clock;
 	using chrono::duration_cast;
 	using chrono::duration;
+	cout << boolalpha;
+	cout << endl << "===== TEST CASES STARTING =====" << endl;
 	auto t1 = high_resolution_clock::now();
 	// Inner code for timing starts
 
-	bloom_filter<string> bf(4, 500, 100);
+	bloom_filter<string> bf(
+								4,
+								atoi(argv[2]),
+								atoi(argv[3])
+							);
 	// cout << bf.probability_false_positive() << endl;
 
-	string TEST_FILE = "./tests/string/string_test_100.txt";
-	ifstream file(TEST_FILE);
-	if(file.is_open()) {
+	string TEST_FILE = "./tests/string/string_test_" + (string)argv[1] + ".txt";
+	string CHECK_FILE = "./tests/check_exists.txt";
+
+	ifstream test_file(TEST_FILE);
+	if(test_file.is_open()){
 		string line;
-		while (getline(file, line)) {
+		while (getline(test_file, line)){
 			// cout << line << "\n";
+			if(!line.empty() && *line.rbegin() == '\r'){
+				line.erase(line.length() - 1, 1);
+			}
 			bf.insert(line);
 		}
-		file.close();
+		test_file.close();
 	}
 
 	auto t2 = high_resolution_clock::now();
@@ -388,18 +399,33 @@ int main(){
 	// Inner code for timing ends
 	duration<double, milli> ms_double = t2 - t1;
 	cout << "Time taken to insert all elements: " << ms_double.count() << "ms\n";
-	cout << bf << endl;
-	string test_strings[] = {
-								"9623_8E08f@A34-.F190",	// present
-								"eeA@0ffBF.3727C",		// present
-								"abcd"					// no
-							};
-	int test_count = sizeof(test_strings) / sizeof(string);
 
-	cout << boolalpha;
-	for(int i = 0; i < test_count; ++i){
-		cout << "Is " << test_strings[i] << " present: " << bf.check(test_strings[i]) << endl;
+	ifstream check_file(CHECK_FILE);
+	if(check_file.is_open()){
+		string line;
+		while (getline(check_file, line)){
+			// cout << line << "\n";
+			if(!line.empty() && *line.rbegin() == '\r'){
+				line.erase(line.length() - 1, 1);
+			}
+			cout << "Is Present? - " << line << " : " << bf.check(line) << endl;
+		}
+		check_file.close();
 	}
+	cout << argv[1] << endl;
+	// cout << bf << endl;
+	// string test_strings[] = {
+	// 							"9623_8E08f@A34-.F190",	// present
+	// 							"eeA@0ffBF.3727C",		// present
+	// 							"abcd"					// no
+	// 						};
+	// int test_count = sizeof(test_strings) / sizeof(string);
+
+	// cout << boolalpha;
+	// for(int i = 0; i < test_count; ++i){
+	// 	cout << "Is " << test_strings[i] << " present: " << bf.check(test_strings[i]) << endl;
+	// }
+	
 	
 
 	// bloom_filter<int> bf(2, 30, 2);

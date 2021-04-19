@@ -1,6 +1,6 @@
 from key_generator.key_generator import generate
 
-all_sizes_required = [(100, '100'), (500, '500'), (1000, '1k'), (5000, '5k'), (10000, '10k'), (25000, '25k'), (50000, '50k'), (100000, '100k')]
+all_sizes_required = [(100, '100'), (500, '500'), (1000, '1K'), (5000, '5K'), (10000, '10K'), (50000, '50K'), (100000, '100K'), (500000, '500K')]
 
 for file_size in all_sizes_required:
 	OUTPUT_PATH = "./int_test_" + file_size[1] + ".txt"
