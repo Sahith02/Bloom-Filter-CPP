@@ -11,6 +11,7 @@ using namespace std;
 typedef unsigned long long int ullong_t;
 
 
+
 /*
 [Class Methods]
 Class bit_vector:
@@ -28,8 +29,6 @@ Class bit_vector:
 	all(): checks if all of the bits are set to 1
 	friend ostream operator<<: displays bit vector
 */
-
-
 
 template<ullong_t bit_size>
 class bit_vector;
@@ -69,7 +68,7 @@ class bit_vector{
 		}
 	}
 
-	bit_vector(ullong_t _bit_size) : _bit_size(_bit_size) {
+	bit_vector(ullong_t _bit_size) : _bit_size(_bit_size){
 		_array_size = _bit_size / WORD + 1;
 		_bit_array = new uint32_t[_array_size];
 		for(int i = 0; i < _array_size; ++i){
@@ -206,25 +205,17 @@ ostream& operator<<(ostream &output, bit_vector<bit_size> b){
 }
 
 
+
 /*
 [Class Methods]
-Class bloom_filter:
-	private:
-	int P: false positivity rate;
-	int k: # of hash functions (seed);
-	int m: size of bit array required;
-	int n: expected # of elements to insert;
-
-	methods:
-	constructor 1: simple init method from parameters P and n;
-	constructor 2: another init method from k, m, n;
-	copy constructor: Makes a deep copy of a previous bloom_filter of same size; [REMINDER: HAVE TO MAKE]
-	insert(): insert hashed value k number of times after each hash function with seed;
-	check(): checks and returns true/false;
-	probability_false_positive(): returns false probability percentage calculated from the # of inserted elements;
+Class Hasher:
+	static methods:
+	hash(string value, int seed);
+	hash(int value, int seed);
+	hash(ullong_t value, int seed);
+	hash(long double value, int seed);
 */
 
-// Hasher class
 class hasher{
 	public:
 		static ullong_t hash(string value, int seed){
@@ -254,6 +245,28 @@ class hasher{
 		}
 };
 
+
+
+/*
+[Class Methods]
+Class bloom_filter:
+	private:
+	int P: false positivity rate;
+	int k: # of hash functions (seed);
+	int m: size of bit array required;
+	int n: expected # of elements to insert;
+
+	methods:
+	constructor 1: simple init method from parameters P and n;
+	constructor 2: another init method from k, m, n;
+	copy constructor: Makes a deep copy of a previous bloom_filter of same size; [REMINDER: HAVE TO MAKE]
+	insert(): insert hashed value k number of times after each hash function with seed;
+	check(): checks and returns true/false;
+	get_false_positive_rate(): returns false probability percentage calculated from the # of inserted elements;
+	get_num_hash_fn(): returns number of hash functions used;
+	get_bit_array_size(): returns size of bit array;
+	get_expected_num_elements(): returns the expected number of elements to be inserted;
+*/
 
 template<typename T>
 class bloom_filter{

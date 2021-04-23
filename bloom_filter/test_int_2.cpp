@@ -23,7 +23,7 @@ int main(int argc, char** argv){
 
 	cout << endl << "===== BLOOM FILTER PROPERTIES =====" << endl;
 
-	cout << "False Positive Probability = " << bf.get_false_positive_rate() * 100 << endl;
+	cout << "False Positive Probability = " << bf.get_false_positive_rate() * 100 << "%" << endl;
 	cout << "Number of Hash functions used = " << bf.get_num_hash_fn() << endl;
 	cout << "Bit array size = " << bf.get_bit_array_size() << endl;
 	cout << "Expected number of elements to insert = " << bf.get_expected_num_elements() << endl;
