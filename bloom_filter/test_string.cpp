@@ -17,11 +17,12 @@ int main(int argc, char** argv){
 	
 	bloom_filter<string> bf(
 								4,
-								atoi(argv[2]),
-								atoi(argv[3])
+								atoll(argv[2]),
+								atoll(argv[3])
 							);
 
 	cout << endl << "===== BLOOM FILTER PROPERTIES =====" << endl;
+	cout << atoll(argv[2]) << endl;
 
 	cout << "False Positive Probability = " << bf.get_false_positive_rate() * 100 << endl;
 	cout << "Number of Hash functions used = " << bf.get_num_hash_fn() << endl;
