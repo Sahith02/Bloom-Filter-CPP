@@ -1,7 +1,6 @@
 #ifndef BLOOM_FILTER_H
 #define BLOOM_FILTER_H
 
-
 #include <stdlib.h>
 #include <cmath>
 #include <sstream>
@@ -34,13 +33,13 @@ template<ullong_t bit_size>
 class bit_vector;
 
 template<ullong_t bit_size>
-ostream& operator<<(ostream &output, bit_vector<bit_size> b);
+ostream& operator<<(ostream &output, bit_vector<bit_size>& b);
 
 template<typename T>
 class bloom_filter;
 
 template<typename T>
-ostream& operator<<(ostream& output, bloom_filter<T> bf);
+ostream& operator<<(ostream& output, bloom_filter<T>& bf);
 
 template<ullong_t bit_size = 0>
 class bit_vector{
@@ -179,11 +178,11 @@ class bit_vector{
 		return true;
 	}
 
-	friend ostream& operator<<<bit_size>(ostream &output, bit_vector<bit_size> b);
+	friend ostream& operator<<<bit_size>(ostream &output, bit_vector<bit_size>& b);
 };
 
 template<ullong_t bit_size>
-ostream& operator<<(ostream &output, bit_vector<bit_size> b){
+ostream& operator<<(ostream &output, bit_vector<bit_size>& b){
 	uint32_t compare = (1 << (WORD - 1));
 	// printing all but last element of bit array
 	ullong_t i = 0;
@@ -298,6 +297,14 @@ class bloom_filter{
 			_bit_vector = new bit_vector<>(_bit_array_size);
 		}
 
+		bloom_filter(bloom_filter<T> &bf){
+			this -> _false_positive_rate = bf._false_positive_rate;
+			this -> _num_hash_fn = bf._num_hash_fn;
+			this -> _bit_array_size = bf._bit_array_size;
+			this -> _expected_num_elements = bf._expected_num_elements;
+			this -> _bit_vector = new bit_vector<>(*(bf._bit_vector));
+		}
+
 		bool insert(T value){
 			// Loop through i from 0 till _num_hash_fn
 				// seed is i
@@ -352,11 +359,11 @@ class bloom_filter{
 			return _expected_num_elements;
 		}
 
-		friend ostream& operator<<<T>(ostream& output, bloom_filter<T> bf);
+		friend ostream& operator<<<T>(ostream& output, bloom_filter<T>& bf);
 };
 
 template<typename T>
-ostream& operator<<(ostream& output, bloom_filter<T> bf){
+ostream& operator<<(ostream& output, bloom_filter<T>& bf){
 	output << *(bf._bit_vector);
 	return output;
 }
