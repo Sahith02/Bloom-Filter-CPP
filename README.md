@@ -32,29 +32,29 @@ make run_double_2 TEST_FILE=500 HASH_COUNT=5 BIT_COUNT=5000 EXPECTED_INSERT=500
 #### Constructor 1
 ```bash
 # To run string test cases
-g++ test_string_1.cpp bloom_filter.hpp
+g++ ./tests/test_string_1.cpp bloom_filter.hpp
 a.exe 500 0.1 500
 
 # To run int test cases
-g++ test_int_1.cpp bloom_filter.hpp
+g++ ./tests/test_int_1.cpp bloom_filter.hpp
 a.exe 500 0.1 500
 
 # To run double test cases
-g++ test_double_1.cpp bloom_filter.hpp
+g++ ./tests/test_double_1.cpp bloom_filter.hpp
 a.exe 500 0.1 500
 ```
 
 #### Constructor 2
 ```bash
 # To run string test cases
-g++ test_string_2.cpp bloom_filter.hpp
+g++ ./tests/test_string_2.cpp bloom_filter.hpp
 a.exe 500 5 5000 500
 
 # To run int test cases
-g++ test_string_2.cpp bloom_filter.hpp
+g++ ./tests/test_string_2.cpp bloom_filter.hpp
 a.exe 500 5 5000 500
 
 # To run double test cases
-g++ test_string_2.cpp bloom_filter.hpp
+g++ ./tests/test_string_2.cpp bloom_filter.hpp
 a.exe 500 5 5000 500
 ```
