@@ -14,7 +14,7 @@ make run_int_1 TEST_FILE=500 FPR=0.1 EXPECTED_INSERT=500
 # To run double test cases
 make run_double_1 TEST_FILE=500 FPR=0.1 EXPECTED_INSERT=500
 ```
-<br />
+
 ##### Constructor 2
 Needs Number of Hash functions, Bit Array Size, Expected Number of Elements.
 ```bash
@@ -27,8 +27,6 @@ make run_int_2 TEST_FILE=500 HASH_COUNT=5 BIT_COUNT=5000 EXPECTED_INSERT=500
 # To run double test cases
 make run_double_2 TEST_FILE=500 HASH_COUNT=5 BIT_COUNT=5000 EXPECTED_INSERT=500
 ```
-
-<br />
 
 #### Windows
 ##### Constructor 1
@@ -45,8 +43,6 @@ a.exe 500 0.1 500
 g++ test_double_1.cpp bloom_filter.hpp
 a.exe 500 0.1 500
 ```
-
-<br />
 
 ##### Constructor 2
 ```bash
