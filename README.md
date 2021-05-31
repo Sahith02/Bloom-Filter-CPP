@@ -1,5 +1,9 @@
 # Generic Bloom Filter
 A light weight and easy to use Bloom Filter Library implemented in C++.
+
+[![GitHub stars](https://img.shields.io/github/stars/Sahith02/Bloom-Filter-CPP)](https://github.com/Sahith02/Bloom-Filter-CPP/stargazers)
+[![GitHub license](https://img.shields.io/github/license/Sahith02/Bloom-Filter-CPP)](https://github.com/Sahith02/Bloom-Filter-CPP)
+[![GitHub issues](https://img.shields.io/github/issues/Sahith02/Bloom-Filter-CPP)](https://github.com/Sahith02/Bloom-Filter-CPP/issues)
 <p align="center"><img src="./images/bloom-filter.png" width="500px" style="border-radius: 20px;"><p>
 
 
