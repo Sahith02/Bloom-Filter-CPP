@@ -3,44 +3,50 @@ A light weight and easy to use Bloom Filter Library implemented in C++.
 
 ## Functionality
 * Creating a bloom filter:
- * Method 1:
-bloom_filter<Type>(false_positivity_rate, expected_number_of_elements);
-Example:
-```cpp
-bloom_filter<string> bf(0.05,10);
-```
+	* Method 1:
+		
+		`bloom_filter<Type>(false_positivity_rate, expected_number_of_elements)`
+		
+		Example:
+		```cpp
+		bloom_filter<string> bf(0.05,10);
+		```
 
- * Method 2:
-bloom_filter<Type>(num_hash_functions, bit_array_size, expected_num_elements);
-Example:
-```cpp
-bloom_filter<string> bf(3,100,50);
-```
+	 * Method 2:
+	
+		`bloom_filter<Type>(num_hash_functions, bit_array_size, expected_num_elements)`
+		
+		Example:
+		```cpp
+		bloom_filter<string> bf(3,100,50);
+		```
 
 * Inserting an element into the bloom_filter: `bf.insert(value)`
-Example:
-```cpp
-bf.insert(“test_email@gmail.com”);
-```
+	
+	Example:
+	```cpp
+	bf.insert(“test_email@gmail.com”);
+	```
 
 * Checking if an element exists in the bloom_filter: `bf.check(value)`
-Example:
-```
-bf.check(“test_email@gmail.com”);
-```
+	
+	Example:
+	```
+	bf.check(“test_email@gmail.com”);
+	```
 
 * Getter functions:
- 1. `bf.get_false_positive_rate()`
- Here bf is the created bloom_filter and it returns the false_positive_rate.
+	 1. `bf.get_false_positive_rate()`
+	 Here bf is the created bloom_filter and it returns the false_positive_rate.
 
- 2. `bf.get_num_hash_fn()`
- Here bf is the created bloom_filter and it returns the number of hash functions.
+	 2. `bf.get_num_hash_fn()`
+	 Here bf is the created bloom_filter and it returns the number of hash functions.
 
- 3. `bf.get_bit_array_size()`
- Here bf is the created bloom_filter and it returns the size of the bit_array.
+	 3. `bf.get_bit_array_size()`
+	 Here bf is the created bloom_filter and it returns the size of the bit_array.
 
- 4. `bf.get_expected_num_elements()`
- Here bf is the created bloom_filter and it returns the expected number of elements.
+	 4. `bf.get_expected_num_elements()`
+	 Here bf is the created bloom_filter and it returns the expected number of elements.
 
 
 ## Simple Example
@@ -121,3 +127,11 @@ Needs Number of Hash functions, Bit Array Size, Expected Number of Elements.
 >> g++ ./tests/test_string_2.cpp bloom_filter.hpp
 >> a.exe 500 5 5000 500
 ```
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure all the above tests pass before opening a pull request.
+
+## License
+[MIT](https://github.com/Sahith02/key-generator/blob/master/LICENSE)
