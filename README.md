@@ -1,5 +1,7 @@
 # Generic Bloom Filter
 A light weight and easy to use Bloom Filter Library implemented in C++.
+<p align="center"><img src="./images/bloom-filter.png" width="500px" style="border-radius: 20px;"><p>
+
 
 ## Functionality
 * Creating a bloom filter:
