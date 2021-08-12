@@ -206,93 +206,6 @@ ostream& operator<<(ostream &output, bit_vector<bit_size>& b){
 }
 
 
-enum Month {
-	Jan = 1,
-	Feb,
-	Mar,
-	Apr,
-	May,
-	Jun,
-	Jul,
-	Aug,
-	Sep,
-	Oct,
-	Nov,
-	Dec
-};
-
-
-class Date{
-	private:
-		int day_;
-		Month month_;
-		int year_;
-		int hour_;
-		int minute_;
-		int second_;
-		// int num_days_[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-	public:
-		Date(int day, Month month, int year, int hour = 0, int minute = 0, int second = 0) : day_(day), month_(month), year_(year), hour_(hour), minute_(minute), second_(second) {
-		}
-		ullong_t timestamp(){
-			ullong_t temp = 0;
-			temp += ((day_ - 1) * 86400);
-			temp += ((month_ - 1) * 86400 * 30);
-			temp += ((year_ - 1970) * 86400 * 365);
-			temp += ((hour_) * 3600);
-			temp += ((minute_) * 60);
-			temp += ((second_));
-			return temp;
-		}
-		int get_day(){
-			return day_;
-		}
-		int get_month(){
-			return month_;
-		}
-		int get_year(){
-			return year_;
-		}
-		int get_hour(){
-			return hour_;
-		}
-		int get_minute(){
-			return minute_;
-		}
-		int get_second(){
-			return second_;
-		}
-		void set_day(int day){
-			day_ = day;
-		}
-		void set_month(Month month){
-			month_ = month;
-		}
-		void set_year(int year){
-			year_ = year;
-		}
-		void set_hour(int hour){
-			hour_ = hour;
-		}
-		void set_minute(int minute){
-			minute_ = minute;
-		}
-		void set_second(int second){
-			second_ = second;
-		}
-		friend ostream& operator<<(ostream& output, Date &date);
-};
-
-
-ostream& operator<<(ostream& output, Date &date){
-	output << date.day_ << "-" << date.month_ << "-" << date.year_ << ", " << date.hour_ << ":" << date.minute_ << ":" << date.second_;
-	return output;
-}
-
-
-
-
 /*
 [Class Methods]
 Class Hasher:
@@ -329,10 +242,6 @@ class hasher{
 			strs << value;
 			string str = strs.str();
 			return hash(str, seed);
-		}
-		static ullong_t hash(Date date, int seed){
-			// cout << date << " " << seed << " " << hash(date.timestamp(), seed) << endl;
-			return hash(date.timestamp(), seed);
 		}
 };
 
